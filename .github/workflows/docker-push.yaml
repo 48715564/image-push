@@ -11,13 +11,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Pull Docker image
-      run: docker pull langgenius/dify-api:0.6.15
+      run: docker pull langgenius/dify-api:0.6.16
 
     - name: Tag Docker image
-      run: docker tag langgenius/dify-api:0.6.15 registry.cn-zhangjiakou.aliyuncs.com/acs-uchonor/acs_ai_llm:0.6.15
+      run: docker tag langgenius/dify-api:0.6.16 registry.cn-zhangjiakou.aliyuncs.com/acs-uchonor/acs_ai_llm:0.6.16
 
     - name: Log in to Docker registry
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin registry.cn-zhangjiakou.aliyuncs.com
 
     - name: Push Docker image
-      run: docker push registry.cn-zhangjiakou.aliyuncs.com/acs-uchonor/acs_ai_llm:0.6.15
+      run: docker push registry.cn-zhangjiakou.aliyuncs.com/acs-uchonor/acs_ai_llm:0.6.16
