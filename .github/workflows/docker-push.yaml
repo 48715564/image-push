@@ -1,6 +1,20 @@
 name: Docker Image Pull, Tag, and Push
 
-on: [push]
+on:
+  workflow_dispatch: 
+    inputs:
+      res_image: 
+        description: '拉取镜像'  
+        required: true 
+        default: 'nvidia/cuda:12.1.0-devel-ubuntu22.04'
+      target_scope: 
+        description: '目标镜像空间'  
+        required: true  
+        default: 'registry.cn-zhangjiakou.aliyuncs.com/compt'
+      target_image: 
+        description: '目标镜像名和版本'  
+        required: true  
+        default: 'cuda:12.1.0-devel-ubuntu22.04'
 
 jobs:
   docker:
@@ -11,13 +25,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Pull Docker image
-      run: docker pull nvidia/cuda:12.1.0-devel-ubuntu22.04
+      run: docker pull ${{ inputs.res_image }}
 
     - name: Tag Docker image
-      run: docker tag nvidia/cuda:12.1.0-devel-ubuntu22.04 registry.cn-zhangjiakou.aliyuncs.com/compt/cuda:12.1.0-devel-ubuntu22.04
+      run: docker tag ${{ inputs.res_image }} ${{ inputs.target_scope }}/${{ inputs.target_image }}
 
     - name: Log in to Docker registry
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin registry.cn-zhangjiakou.aliyuncs.com
 
     - name: Push Docker image
-      run: docker push registry.cn-zhangjiakou.aliyuncs.com/compt/cuda:12.1.0-devel-ubuntu22.04
+      run: docker push ${{ inputs.target_scope }}/${{ inputs.target_image }}
